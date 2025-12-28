@@ -262,7 +262,7 @@ extern "C" {
     "#)]
 extern "C" {
     #[wasm_bindgen(js_name = getBaseContents)]
-    pub fn get_base_contents(selector: &str) -> Option<String>;
+    pub fn get_base_contents() -> Option<String>;
 }
 
 
@@ -279,7 +279,6 @@ pub fn web_base_path() -> Option<String> {
         }
         BASE_PATH.with(|f| f.get_or_init(|| get_meta_contents(ASSET_ROOT_ENV)).clone())
     }
-
     // In release mode, we get the base path from the environment variable
     #[cfg(not(debug_assertions))]
     {
