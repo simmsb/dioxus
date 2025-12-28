@@ -152,7 +152,7 @@ impl Asset {
         #[cfg(feature = "dioxus")]
         // If the asset is relative, we resolve the asset at the current directory
         if !dioxus_core_types::is_bundled_app() {
-            return PathBuf::from(self.bundled().absolute_source_path.as_str());
+            return PathBuf::from(self.bundled().absolute_source_path.as_str()).strip_prefix("/").unwrap().to_owned();
         }
 
         #[cfg(feature = "dioxus")]
@@ -162,13 +162,14 @@ impl Asset {
                 .as_deref()
                 .map(|base_path| {
                     let trimmed = base_path.trim_matches('/');
-                    format!("/{trimmed}")
+                    format!("{trimmed}")
                 })
                 .unwrap_or_default();
             PathBuf::from(format!("{base_path}/assets/"))
         };
         #[cfg(not(feature = "dioxus"))]
-        let bundle_root = PathBuf::from("/assets/");
+        let bundle_root = PathBuf::from("assets/");
+        let bundle_root = bundle_root.strip_prefix("/").unwrap_or(&bundle_root).to_owned();
 
         // Otherwise presumably we're bundled and we can use the bundled path
         bundle_root.join(PathBuf::from(
