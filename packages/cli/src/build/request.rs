@@ -4112,7 +4112,7 @@ impl BuildRequest {
                 let path = bindgen_outdir.join(format!("chunk_{}_{}.wasm", idx, chunk.module_name));
                 wasm_opt::write_wasm(&chunk.bytes, &path, &wasm_opt_options).await?;
                 writeln!(
-                    glue, "export const __wasm_split_load_chunk_{idx} = makeLoad(\"/{base_path}/assets/{url}\", [], fusedImports);",
+                    glue, "export const __wasm_split_load_chunk_{idx} = makeLoad(\"{base_path}/assets/{url}\", [], fusedImports);",
                     base_path = self.base_path_or_default(),
                     url = assets
                         .register_asset(&path, AssetOptions::builder().into_asset_options())?.bundled_path(),
@@ -4137,7 +4137,7 @@ impl BuildRequest {
 
                 writeln!(
                     glue,
-                    "export const __wasm_split_load_{module}_{hash_id}_{comp_name} = makeLoad(\"/{base_path}/assets/{url}\", [{deps}], fusedImports);",
+                    "export const __wasm_split_load_{module}_{hash_id}_{comp_name} = makeLoad(\"{base_path}/assets/{url}\", [{deps}], fusedImports);",
                     module = module.module_name,
 
                     base_path = self.base_path_or_default(),
@@ -4234,7 +4234,7 @@ impl BuildRequest {
 globalThis.__wasm_split_main_initSync = initSync;
 
 // Actually perform the load
-__wbg_init({{module_or_path: "/{}/{wasm_path}"}}).then((wasm) => {{
+__wbg_init({{module_or_path: "{}/{wasm_path}"}}).then((wasm) => {{
     // assign this module to be accessible globally
     globalThis.__dx_mainWasm = wasm;
     globalThis.__dx_mainInit = __wbg_init;
@@ -4975,7 +4975,7 @@ __wbg_init({{module_or_path: "/{}/{wasm_path}"}}).then((wasm) => {{
         *html = html.replace(
             "</body",
             &format!(
-                r#"<script type="module" async src="/{}/{}"></script>
+                r#"<script type="module" async src="{}/{}"></script>
             </body"#,
                 self.base_path_or_default(),
                 self.bundled_js_path(assets)
@@ -5062,7 +5062,7 @@ __wbg_init({{module_or_path: "/{}/{wasm_path}"}}).then((wasm) => {{
 
     /// Get the trimmed base path or `.` if no base path is set
     pub(crate) fn base_path_or_default(&self) -> &str {
-        self.trimmed_base_path().unwrap_or(".")
+        self.trimmed_base_path().unwrap_or("")
     }
 
     /// Get the path to the package manifest directory
