@@ -13,7 +13,7 @@ pub(crate) type ContextProviders = Arc<Vec<Box<dyn Fn() -> Box<dyn Any> + Send +
 /// A ServeConfig is used to configure how to serve a Dioxus application. It contains information about how to serve static assets, and what content to render with [`dioxus_ssr`].
 #[derive(Clone)]
 pub struct ServeConfig {
-    pub(crate) index: IndexHtml,
+    pub index: IndexHtml,
     pub(crate) incremental: Option<IncrementalRendererConfig>,
     pub(crate) context_providers: Vec<Arc<dyn Fn() -> Box<dyn Any> + Send + Sync + 'static>>,
     pub(crate) streaming_mode: StreamingMode,

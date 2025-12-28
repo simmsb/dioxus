@@ -163,12 +163,12 @@ pub fn Link(props: LinkProps) -> Element {
 
     let current_url = router.full_route_string();
     let href = match &to {
-        NavigationTarget::Internal(url) => url.clone(),
+        NavigationTarget::Internal(url) => url.trim_start_matches('/').to_string(),
         NavigationTarget::External(route) => route.clone(),
     };
     // Add the history's prefix to internal hrefs for use in the rsx
     let full_href = match &to {
-        NavigationTarget::Internal(url) => router.prefix().unwrap_or_default() + url,
+        NavigationTarget::Internal(url) => router.prefix().unwrap_or_default() + url.trim_start_matches('/'),
         NavigationTarget::External(route) => route.clone(),
     };
 

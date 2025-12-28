@@ -46,5 +46,5 @@ pub use serverfn::*;
 pub mod isrg;
 pub use isrg::*;
 
-mod index_html;
+pub mod index_html;
 pub use index_html::IndexHtml;

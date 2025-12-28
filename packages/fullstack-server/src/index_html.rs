@@ -29,12 +29,12 @@ use std::path::Path;
 /// ```
 #[derive(Clone, Debug)]
 pub struct IndexHtml {
-    pub(crate) head_before_title: String,
-    pub(crate) head_after_title: String,
-    pub(crate) title: String,
-    pub(crate) close_head: String,
-    pub(crate) post_main: String,
-    pub(crate) after_closing_body_tag: String,
+    pub head_before_title: String,
+    pub head_after_title: String,
+    pub title: String,
+    pub close_head: String,
+    pub post_main: String,
+    pub after_closing_body_tag: String,
 }
 
 impl IndexHtml {
@@ -105,7 +105,7 @@ impl IndexHtml {
     pub fn ssr_only() -> Self {
         const DEFAULT: &str = r#"<!DOCTYPE html>
         <html>
-            <head> </head>
+            <head> <base href="/" /> </head>
             <body>
                 <div id="main"></div>
             </body>
