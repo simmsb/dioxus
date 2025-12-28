@@ -5062,7 +5062,7 @@ __wbg_init({{module_or_path: "{}/{wasm_path}"}}).then((wasm) => {{
 
     /// Get the trimmed base path or `.` if no base path is set
     pub(crate) fn base_path_or_default(&self) -> &str {
-        self.trimmed_base_path().unwrap_or("")
+        self.trimmed_base_path().unwrap_or(".")
     }
 
     /// Get the path to the package manifest directory
