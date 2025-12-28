@@ -4920,13 +4920,13 @@ __wbg_init({{module_or_path: "{}/{wasm_path}"}}).then((wasm) => {{
                     if css_options.preloaded() {
                         _ = write!(
                             head_resources,
-                            r#"<link rel="preload" as="style" href="/{{base_path}}/assets/{asset_path}" crossorigin>"#
+                            r#"<link rel="preload" as="style" href="{{base_path}}/assets/{asset_path}" crossorigin>"#
                         );
                     }
                     if css_options.static_head() {
                         _ = write!(
                             head_resources,
-                            r#"<link rel="stylesheet" href="/{{base_path}}/assets/{asset_path}" type="text/css">"#
+                            r#"<link rel="stylesheet" href="{{base_path}}/assets/{asset_path}" type="text/css">"#
                         );
                     }
                 }
@@ -4934,7 +4934,7 @@ __wbg_init({{module_or_path: "{}/{wasm_path}"}}).then((wasm) => {{
                     if image_options.preloaded() {
                         _ = write!(
                             head_resources,
-                            r#"<link rel="preload" as="image" href="/{{base_path}}/assets/{asset_path}" crossorigin>"#
+                            r#"<link rel="preload" as="image" href="{{base_path}}/assets/{asset_path}" crossorigin>"#
                         );
                     }
                 }
@@ -4942,13 +4942,13 @@ __wbg_init({{module_or_path: "{}/{wasm_path}"}}).then((wasm) => {{
                     if js_options.preloaded() {
                         _ = write!(
                             head_resources,
-                            r#"<link rel="preload" as="script" href="/{{base_path}}/assets/{asset_path}" crossorigin>"#
+                            r#"<link rel="preload" as="script" href="{{base_path}}/assets/{asset_path}" crossorigin>"#
                         );
                     }
                     if js_options.static_head() {
                         _ = write!(
                             head_resources,
-                            r#"<script src="/{{base_path}}/assets/{asset_path}"></script>"#
+                            r#"<script src="{{base_path}}/assets/{asset_path}"></script>"#
                         );
                     }
                 }
