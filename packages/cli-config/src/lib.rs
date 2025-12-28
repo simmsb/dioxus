@@ -250,6 +250,22 @@ extern "C" {
     pub fn get_meta_contents(selector: &str) -> Option<String>;
 }
 
+#[cfg(feature = "web")]
+#[wasm_bindgen::prelude::wasm_bindgen(inline_js = r#"
+        export function getBaseContents() {
+            const selector = document.querySelector(`base`);
+            if (!selector) {
+                return null;
+            }
+            return URL.parse(selector.href).pathname;
+        }
+    "#)]
+extern "C" {
+    #[wasm_bindgen(js_name = getBaseContents)]
+    pub fn get_base_contents(selector: &str) -> Option<String>;
+}
+
+
 /// Get the path where the application is served from in the browser.
 ///
 /// This uses wasm_bindgen on the browser to extract the base path from a meta element.
@@ -267,6 +283,14 @@ pub fn web_base_path() -> Option<String> {
     // In release mode, we get the base path from the environment variable
     #[cfg(not(debug_assertions))]
     {
+        thread_local! {
+            static BASE_ELEMENT_PATH: std::cell::OnceCell<Option<String>> = const { std::cell::OnceCell::new() };
+        }
+        let x = BASE_ELEMENT_PATH.with(|f| f.get_or_init(|| get_base_contents()).clone());
+        if let Some(x) = x {
+            return Some(x);
+        }
+
         option_env!("DIOXUS_ASSET_ROOT").map(ToString::to_string)
     }
 }
