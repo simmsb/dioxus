@@ -171,6 +171,9 @@ impl Asset {
         let bundle_root = PathBuf::from("assets/");
         let bundle_root = bundle_root.strip_prefix("/").unwrap_or(&bundle_root).to_owned();
 
+        #[cfg(feature = "web")]
+        let bundle_root = PathBuf::from("/").join(bundle_root);
+
         // Otherwise presumably we're bundled and we can use the bundled path
         bundle_root.join(PathBuf::from(
             self.bundled().bundled_path.as_str().trim_start_matches('/'),
