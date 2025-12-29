@@ -295,7 +295,7 @@ pub fn web_base_path() -> Option<String> {
     #[cfg(not(debug_assertions))]
     {
 
-        option_env!("DIOXUS_ASSET_ROOT").map(ToString::to_string)
+        return option_env!("DIOXUS_ASSET_ROOT").map(ToString::to_string);
     }
 
     return None;
