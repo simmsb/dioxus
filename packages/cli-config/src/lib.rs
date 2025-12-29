@@ -271,27 +271,34 @@ extern "C" {
 /// This uses wasm_bindgen on the browser to extract the base path from a meta element.
 #[cfg(feature = "web")]
 pub fn web_base_path() -> Option<String> {
+    println!("getting base path!");
     // In debug mode, we get the base path from the meta element which can be hot reloaded and changed without recompiling
     #[cfg(debug_assertions)]
     {
         thread_local! {
             static BASE_PATH: std::cell::OnceCell<Option<String>> = const { std::cell::OnceCell::new() };
         }
-        BASE_PATH.with(|f| f.get_or_init(|| get_meta_contents(ASSET_ROOT_ENV)).clone())
+        let x = BASE_PATH.with(|f| f.get_or_init(|| get_meta_contents(ASSET_ROOT_ENV)).clone());
+        if let Some(x) = x {
+            return Some(x);
+        }
+    }
+
+    thread_local! {
+        static BASE_ELEMENT_PATH: std::cell::OnceCell<Option<String>> = const { std::cell::OnceCell::new() };
+    }
+    let x = BASE_ELEMENT_PATH.with(|f| f.get_or_init(|| get_base_contents()).clone());
+    if let Some(x) = x {
+        return Some(x);
     }
     // In release mode, we get the base path from the environment variable
     #[cfg(not(debug_assertions))]
     {
-        thread_local! {
-            static BASE_ELEMENT_PATH: std::cell::OnceCell<Option<String>> = const { std::cell::OnceCell::new() };
-        }
-        let x = BASE_ELEMENT_PATH.with(|f| f.get_or_init(|| get_base_contents()).clone());
-        if let Some(x) = x {
-            return Some(x);
-        }
 
         option_env!("DIOXUS_ASSET_ROOT").map(ToString::to_string)
     }
+
+    return None;
 }
 
 /// Format a meta element for the base path to be used in the output HTML
